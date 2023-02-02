@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Validator;
+use App\Models\CollectionCard;
 use Illuminate\Http\Request;
 use App\Models\Collection;
 use App\Models\User;
@@ -24,15 +26,31 @@ class CardController extends Controller
                 'Errores' => $validator->errors(),
             ], 422);
         } else {
+            $card = new Card();
+            $card->name = $data->name;
+            $card->description = $data->description;
+            $card->collection_id = $data->collection_id;
             try {
-                // TODO: Comprobar que el usuario esté logeado
-                // TODO: Comprobar que el usuario logeado sea admin
-                // TODO: Si no hay colección OK, pero si no hay carta ?? 
+                $card->save();
+            } catch (Exception $e) {
+                return response([
+                    "message" => "Algo no ha ido como debería"
+                ], 500);
+            } 
+            $collectionCard = new CollectionCard();
+            $collectionCard->cards_id = $card->id;
+            $collectionCard->collections_id = $data->collection_id;
+            try {
+                $collectionCard->save();
             } catch (Exception $e) {
                 return response([
                     "message" => "Algo no ha ido como debería"
                 ], 500);
             }
         }
+        return response()->json([
+            'Carta' => $card,
+            'Message' => 'Carta creada correctamente'
+        ], 200);
     }
 }

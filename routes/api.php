@@ -28,7 +28,7 @@ Route::prefix('/user')->group(function() {
 });
 
 Route::prefix('/card')->group(function() {
-    Route::put('/create', [CardController::class, 'create']);
+    Route::put('/create', [CardController::class, 'create'])->middleware('auth:sanctum', 'ability:Administrador');
 });
 
 Route::prefix('/collection')->group(function() {

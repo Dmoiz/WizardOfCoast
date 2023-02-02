@@ -17,12 +17,12 @@ class CollectionCardSeeder extends Seeder
     {
         for ($i = 1; $i < 5; $i++) {
             if($i % 2 == 0) {
-                DB::table('collections_cards')->insert([
+                DB::table('collection_cards')->insert([
                     'cards_id' => $i,
                     'collections_id' => 2
                 ]);
             } else {
-                DB::table('collections_cards')->insert([
+                DB::table('collection_cards')->insert([
                     'cards_id' => $i,
                     'collections_id' => 1
                 ]);

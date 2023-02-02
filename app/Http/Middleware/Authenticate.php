@@ -15,7 +15,8 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
-            return route('login');
+            print("Necesitas ser un adiminstrador para dar de alta las cartas");
+            die();
         }
     }
 }

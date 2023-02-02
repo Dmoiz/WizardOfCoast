@@ -37,7 +37,9 @@ class UserController extends Controller
         try {
             $user->save();
         } catch (Exception $e){
-
+            return response([
+                'message' => 'Ha ocurrido un error interno'
+            ], 500);
         }
         
 
