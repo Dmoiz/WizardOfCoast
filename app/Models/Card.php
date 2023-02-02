@@ -10,6 +10,6 @@ class Card extends Model
     use HasFactory;
 
     public function collections() {
-        return $this->hasMany(Collections::class);
+        return $this->hasMany(Collection::class);
     }
 }
