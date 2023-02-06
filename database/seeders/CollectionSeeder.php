@@ -20,7 +20,8 @@ class CollectionSeeder extends Seeder
         foreach ($names as $name) {
             DB::table('collections')->insert([
                 'name' => $name,
-                'symbol' => $name
+                'symbol' => $name.'png',
+                'release_date' => '2000-01-01' //AÑO, MES, DÍA -- YYYY-MM-DD
             ]);
         }
     }

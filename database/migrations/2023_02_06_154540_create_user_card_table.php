@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('collection_cards', function (Blueprint $table) {
+        Schema::create('users_cards', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cards_id')->constrained();
-            $table->foreignId('collections_id')->constrained();
+            $table->foreignId('user_id');
+            $table->foreignId('card_id');
+            $table->float('price');
+            $table->integer('amount');
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('collection_cards');
+        Schema::dropIfExists('users_cards');
     }
 };

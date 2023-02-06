@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('collections', function (Blueprint $table) {
+        Schema::create('card_collection', function (Blueprint $table) {
             $table->id();
-            $table->text('name');
-            $table->text('symbol');
-            $table->date('release_date');
+            $table->foreignId('card_id')->constrained();
+            $table->foreignId('collection_id')->constrained();
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('collections');
+        Schema::dropIfExists('card_collection');
     }
 };

@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 
-class CollectionCardSeeder extends Seeder
+class CardCollectionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,14 +17,14 @@ class CollectionCardSeeder extends Seeder
     {
         for ($i = 1; $i < 5; $i++) {
             if($i % 2 == 0) {
-                DB::table('collection_cards')->insert([
-                    'cards_id' => $i,
-                    'collections_id' => 2
+                DB::table('card_collection')->insert([
+                    'card_id' => $i,
+                    'collection_id' => 2
                 ]);
             } else {
-                DB::table('collection_cards')->insert([
-                    'cards_id' => $i,
-                    'collections_id' => 1
+                DB::table('card_collection')->insert([
+                    'card_id' => $i,
+                    'collection_id' => 1
                 ]);
             }
         }

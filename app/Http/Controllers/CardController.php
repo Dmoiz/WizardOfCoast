@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Validator;
-use App\Models\CollectionCard;
 use Illuminate\Http\Request;
 use App\Models\Collection;
 use App\Models\User;
@@ -18,7 +17,7 @@ class CardController extends Controller
         $validator = Validator::make(json_decode($json, true),[
             'name' => 'required|max:30',
             'description' => 'required|max:50',
-            'collection_id' => 'required|exists:collections,id'
+            'collection_id' => 'exists:collections,id'
         ]);
 
         if($validator->fails()) {
@@ -29,28 +28,49 @@ class CardController extends Controller
             $card = new Card();
             $card->name = $data->name;
             $card->description = $data->description;
-            $card->collection_id = $data->collection_id;
-            try {
-                $card->save();
-            } catch (Exception $e) {
+            if(isset($data->collection_id)) {
+                try {
+                    $card->save();
+                    $collection = Collection::find($data->collection_id);
+                    $collection->cards()->attach($card->id);
+                } catch (Exception $e) {
+                    return response([
+                        "message" => "Algo no ha ido como debería"
+                    ], 500);
+                } 
+            } else if(isset($data->collection_name) && isset($data->collection_symbol) && isset($data->collection_release_date)) {
+                $newCollection = new Collection();
+                $newCollection->name = $data->collection_name;
+                $newCollection->symbol = $data->collection_symbol;
+                $newCollection->release_date = $data->collection_release_date;
+                try {
+                    $card->save();
+                    $newCollection->save();
+                    $cardFind = Card::find($card->id);
+                    $cardFind->collections()->attach($newCollection->id);
+                    return response([
+                        'Colección' => $newCollection,
+                        'Carta' => $card,
+                        'Message' => 'Carta creada correctamente'
+                    ]);
+                } catch (Exception $e) {
+                    return response([
+                        "message" => "Algo no ha ido como debería"
+                    ], 500);
+                }
+            } else {
                 return response([
-                    "message" => "Algo no ha ido como debería"
-                ], 500);
-            } 
-            $collectionCard = new CollectionCard();
-            $collectionCard->cards_id = $card->id;
-            $collectionCard->collections_id = $data->collection_id;
-            try {
-                $collectionCard->save();
-            } catch (Exception $e) {
-                return response([
-                    "message" => "Algo no ha ido como debería"
-                ], 500);
+                    "message" => "Si no hay una colección asignada, crea o añade una por favor"
+                ]);
             }
         }
         return response()->json([
             'Carta' => $card,
             'Message' => 'Carta creada correctamente'
         ], 200);
+    }
+
+    public function sell(Request $request) {
+
     }
 }

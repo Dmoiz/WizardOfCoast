@@ -20,8 +20,8 @@ class CardSeeder extends Seeder
         foreach ($names as $name) {
             DB::table('cards')->insert([
                 'name' => $name,
-                'description' => $name,
-                'collection_id' => 1
+                'description' => $name
+                //'collection_id' => 1
             ]);
         }
     }

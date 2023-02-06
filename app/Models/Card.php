@@ -10,6 +10,10 @@ class Card extends Model
     use HasFactory;
 
     public function collections() {
-        return $this->hasMany(Collection::class);
+        return $this->belongsToMany(Collection::class);
+    }
+
+    public function users() {
+        return $this->belongsToMany(User::class);
     }
 }
