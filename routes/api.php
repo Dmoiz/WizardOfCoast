@@ -29,8 +29,11 @@ Route::prefix('/user')->group(function() {
 
 Route::prefix('/card')->group(function() {
     Route::put('/create', [CardController::class, 'create'])->middleware('auth:sanctum', 'ability:Administrador');
+    Route::get('/search/{name}', [CardController::class, 'searcher'])->middleware('auth:sanctum', 'ability:Particular,Profesional');
+    Route::get('/sell/{name}', [CardController::class, 'sell'])->middleware('auth:sanctum', 'ability:Particular,Profesional');
+    Route::post('/edit/{id}', [CardController::class, 'edit'])->middleware('auth:sanctum', 'ability:Administrador');
 });
 
 Route::prefix('/collection')->group(function() {
-    Route::put('/create', [CollectionController::class, 'create']);
+    Route::put('/create', [CollectionController::class, 'create'])->middleware('auth:sanctum', 'ability:Administrador');
 });

@@ -20,19 +20,9 @@ class CollectionController extends Controller
             'card_id' => 'exists:cards,id'
         ]);
 
-        /* $card_validator = Validator::make(json_decode($json, true), [
-            'name' => 'required|max:30',
-            'symbol' => 'required|max:50',
-            'release_date' => 'required|date',
-            'card_name' => 'required|max:30',
-            'card_description' => 'required|max:50'
-        ]);  */
-
-        if($validator->fails() /* || $card_validator->fails() */) {
+        if($validator->fails()) {
             return response([
                 'Errores' => $validator->errors()
-                /* 'Errores' => $card_validator->errors() */
-
             ], 422);
         } else {
             $collection = new Collection();
