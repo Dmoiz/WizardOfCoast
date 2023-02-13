@@ -22,18 +22,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('/user')->group(function() {
-    Route::put('/create', [UserController::class, 'create']);
-    Route::post('/login', [UserController::class, 'login']);
-    Route::post('/recover', [UserController::class, 'recover_password']);
+    Route::middleware('request.logging')->put('/create', [UserController::class, 'create']);
+    Route::middleware('request.logging')->post('/login', [UserController::class, 'login']);
+    Route::middleware('request.logging')->post('/recover', [UserController::class, 'recover_password']);
 });
 
 Route::prefix('/card')->group(function() {
-    Route::put('/create', [CardController::class, 'create'])->middleware('auth:sanctum', 'ability:Administrador');
-    Route::get('/search/{name}', [CardController::class, 'searcher'])->middleware('auth:sanctum', 'ability:Particular,Profesional');
-    Route::get('/sell/{name}', [CardController::class, 'sell'])->middleware('auth:sanctum', 'ability:Particular,Profesional');
-    Route::post('/edit/{id}', [CardController::class, 'edit'])->middleware('auth:sanctum', 'ability:Administrador');
+    Route::middleware('request.logging')->put('/create', [CardController::class, 'create'])->middleware('auth:sanctum', 'ability:Administrador');
+    Route::middleware('request.logging')->get('/search/{name}', [CardController::class, 'searcher']);
+    Route::middleware('request.logging')->post('/sell/{id}', [CardController::class, 'sell'])->middleware('auth:sanctum', 'ability:Particular,Profesional');
+    Route::middleware('request.logging')->post('/edit/{id}', [CardController::class, 'edit'])->middleware('auth:sanctum', 'ability:Administrador');
+    Route::middleware('request.logging')->get('/buy/{name}', [CardController::class, 'buy'])->middleware('auth:sanctum', 'ability:Particular,Profesional');
 });
 
 Route::prefix('/collection')->group(function() {
-    Route::put('/create', [CollectionController::class, 'create'])->middleware('auth:sanctum', 'ability:Administrador');
+    Route::middleware('request.logging')->put('/create', [CollectionController::class, 'create'])->middleware('auth:sanctum', 'ability:Administrador');
+    Route::middleware('request.logging')->post('/edit/{id}', [CollectionController::class, 'edit'])->middleware('auth:sanctum', 'ability:Administrador');
 });

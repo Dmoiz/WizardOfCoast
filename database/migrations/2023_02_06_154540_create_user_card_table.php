@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users_cards', function (Blueprint $table) {
+        Schema::create('card_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
             $table->foreignId('card_id');
+            $table->foreignId('user_id');
+            $table->text('card_name');
             $table->float('price');
             $table->integer('amount');
             $table->timestamps();

@@ -75,7 +75,7 @@ class UserController extends Controller
 
             } catch(\Exception $e) {
                 return response()->json([
-                    'Message' => 'Ha ocurrido un error al hacer login'
+                    'Message' => 'Ha ocurrido un error al hacer login, comprueba que el nombre exista'
                 ], 500);
             }
         }
