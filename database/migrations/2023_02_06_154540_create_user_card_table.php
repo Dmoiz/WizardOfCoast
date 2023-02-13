@@ -13,6 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('card_user');
         Schema::create('card_user', function (Blueprint $table) {
             $table->id();
             $table->foreignId('card_id');
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users_cards');
+        Schema::dropIfExists('card_user');
     }
 };

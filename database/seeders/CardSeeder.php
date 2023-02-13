@@ -21,8 +21,11 @@ class CardSeeder extends Seeder
             DB::table('cards')->insert([
                 'name' => $name,
                 'description' => $name
-                //'collection_id' => 1
             ]);
         }
+        DB::table('cards')->insert([
+            'name' => 'Carta guay',
+            'description' => 'Carta muy guay'
+        ]);
     }
 }

@@ -32,7 +32,7 @@ Route::prefix('/card')->group(function() {
     Route::middleware('request.logging')->get('/search/{name}', [CardController::class, 'searcher']);
     Route::middleware('request.logging')->post('/sell/{id}', [CardController::class, 'sell'])->middleware('auth:sanctum', 'ability:Particular,Profesional');
     Route::middleware('request.logging')->post('/edit/{id}', [CardController::class, 'edit'])->middleware('auth:sanctum', 'ability:Administrador');
-    Route::middleware('request.logging')->get('/buy/{name}', [CardController::class, 'buy'])->middleware('auth:sanctum', 'ability:Particular,Profesional');
+    Route::middleware('request.logging')->get('/buy', [CardController::class, 'buy'])->middleware('auth:sanctum', 'ability:Particular,Profesional');
 });
 
 Route::prefix('/collection')->group(function() {

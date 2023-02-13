@@ -111,51 +111,49 @@ class CardController extends Controller
                 'Errores' => $validator->errors(),
             ], 422);
         } else {
-            $user = Auth::id();
-            $searchCard = Card::find($id);
-            $searchCard->users()->attach($user, ['card_name' => $searchCard->name, 'price' => $data->price, 'amount' => $data->amount]);
-            return response([
-                'Carta' => $searchCard
-            ]);
+            try {
+                $user = Auth::id();
+                $searchCard = Card::find($id);
+                $searchCard->users()->attach($user, ['card_name' => $searchCard->name, 'price' => $data->price, 'amount' => $data->amount]);
+            } catch(Exception $e) {
+                return response([
+                    'message' => 'No se ha encontrado la carta'
+                ]);
+            }
         }
         return response([
-            'Carta' => 'Bien'
+            'Carta' => $searchCard
         ]);
     }
 
-    public function buy($name) {
-        try {
-            $cardToBuy = DB::table('card_user')
-            ->select('card_name', 'amount', 'price', 'user_id')
-            ->where('card_name', 'LIKE', '%'.$name.'%')
-            ->orderBy('price', 'DESC');
-            $cardName = DB::table('cards')
-            ->joinSub($cardToBuy, 'card_user', function($join) {
-                $join->on('cards.name', '=', 'card_user.card_name');
-            })->get();
-        } catch(Exception $e) {
-            return response([
-                'message' => 'No se ha encontrado una carta que coincida con el nombre'
-            ]);
+    public function buy(Request $request) {
+        $json = $request->getContent();
+        $data = json_decode($json);
+
+        $validator = Validator::make(json_decode($json, true),[
+            'name' => 'required'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'Errores' => $validator->errors(),
+            ], 422);
+        } else {
+            try {
+                $cardToBuy = DB::table('card_user')
+                ->select('card_name', 'amount', 'price', 'user_id')
+                ->where('card_name', 'LIKE', '%'.$data->name.'%')
+                ->orderBy('price', 'ASC')->get();
+            } catch(Exception $e) {
+                return response([
+                    'message' => 'No se ha encontrado una carta que coincida con el nombre'
+                ]);
+            }
         }
+        
         return response([
-            'card' => $cardName
+            'card' => $cardToBuy
         ]); 
-        /* try {
-            $card = Card::select('name', )
-            ->where('name','like','%'.$name.'%')->get();
-            $cardToBuy = UserCard::select('')->get();
-            //$searchCard = Card::find($card->id);
-            $user = Auth::id();
-            //$card->users()->attach(['card_name' => $searchCard->name, 'amount' => $searchCard->amount, 'price' => $searchCard->price], $user);
-        } catch(Exception $e) {
-            return response([
-                'message' => 'No se ha encontrado una carta que coincida con el nombre'
-            ]);
-        }
-        return response([
-            'card' => $card
-        ]); */
     }
 
     public function edit(Request $request, $id) {
