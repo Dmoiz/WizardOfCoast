@@ -17,7 +17,7 @@ class UserController extends Controller
 
         $validator = Validator::make(json_decode($json, true),[
             'name' => 'required|min:3|max:10|unique:users,name',
-            'email' => 'required|email|max:30',
+            'email' => 'required|email|max:30|unique:users,email',
             'password' => ['required', Password::min(4)->mixedCase()],
             'role' => 'required|in:Particular,Profesional,Administrador'
         ]);
@@ -42,7 +42,6 @@ class UserController extends Controller
             ], 500);
         }
         
-
         return response()->json($data, 201);
     }
 
